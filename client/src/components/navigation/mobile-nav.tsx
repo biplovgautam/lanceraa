@@ -29,7 +29,15 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavProps) {
-  const { user } = useAuth();
+  const { user, logoutMutation } = useAuth();
+  const handleLogin = () => {
+    //Implement your login logic here
+  };
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    onClose();
+  };
+
   return (
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent side="left" className="w-[300px] sm:w-[400px]">
@@ -96,7 +104,7 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
           </Accordion>
 
           {/* Profile Section */}
-          {user && (
+          {user ? (
             <div className="mt-4 pt-4 border-t">
               <Accordion type="single" collapsible>
                 <AccordionItem value="profile">
@@ -131,10 +139,7 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
                       <Button 
                         variant="ghost" 
                         className="w-full justify-start" 
-                        onClick={() => {
-                          logoutMutation.mutate();
-                          onClose();
-                        }}
+                        onClick={handleLogout}
                       >
                         Logout
                       </Button>
@@ -143,6 +148,10 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
                 </AccordionItem>
               </Accordion>
             </div>
+          ) : (
+            <Button variant="ghost" className="w-full justify-start" onClick={handleLogin}>
+              Login
+            </Button>
           )}
         </nav>
       </SheetContent>
