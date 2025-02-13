@@ -9,6 +9,7 @@ import About from "@/pages/about";
 import Recruit from "@/pages/recruit";
 import Work from "@/pages/work";
 import Dashboard from "@/pages/dashboard";
+import { useEffect } from "react";
 
 function Router() {
   return (
@@ -24,11 +25,23 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    // Initialize dark mode from localStorage or system preference
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const theme = savedTheme || systemTheme;
+
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Navbar />
-      <Router />
-      <Toaster />
+      <div className="min-h-screen bg-background text-foreground">
+        <Navbar />
+        <Router />
+        <Toaster />
+      </div>
     </QueryClientProvider>
   );
 }
