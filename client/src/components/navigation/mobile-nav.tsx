@@ -29,6 +29,7 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavProps) {
+  const { user } = useAuth();
   return (
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent side="left" className="w-[300px] sm:w-[400px]">
