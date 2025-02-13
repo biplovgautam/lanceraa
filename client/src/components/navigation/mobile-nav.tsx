@@ -18,6 +18,9 @@ interface Categories {
   freelancer: Category[];
 }
 
+import { useAuth } from "@/hooks/use-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 interface MobileNavProps {
   open: boolean;
   onClose: () => void;
@@ -90,6 +93,38 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+
+          {/* Profile Section */}
+          {user && (
+            <div className="mt-4 pt-4 border-t">
+              <div className="flex items-center gap-4 px-4 mb-4">
+                <Avatar>
+                  <AvatarImage src={user.avatar || undefined} />
+                  <AvatarFallback>
+                    {user.username?.slice(0, 2).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="font-medium">{user.username}</span>
+              </div>
+              <div className="flex flex-col space-y-2">
+                <Link href="/dashboard">
+                  <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                    Dashboard
+                  </Button>
+                </Link>
+                <Link href="/profile">
+                  <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                    Profile
+                  </Button>
+                </Link>
+                <Link href="/settings">
+                  <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                    Settings
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
         </nav>
       </SheetContent>
     </Sheet>
