@@ -98,32 +98,40 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
           {/* Profile Section */}
           {user && (
             <div className="mt-4 pt-4 border-t">
-              <div className="flex items-center gap-4 px-4 mb-4">
-                <Avatar>
-                  <AvatarImage src={user.avatar || undefined} />
-                  <AvatarFallback>
-                    {user.username?.slice(0, 2).toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="font-medium">{user.username}</span>
-              </div>
-              <div className="flex flex-col space-y-2">
-                <Link href="/dashboard">
-                  <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
-                    Dashboard
-                  </Button>
-                </Link>
-                <Link href="/profile">
-                  <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
-                    Profile
-                  </Button>
-                </Link>
-                <Link href="/settings">
-                  <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
-                    Settings
-                  </Button>
-                </Link>
-              </div>
+              <Accordion type="single" collapsible>
+                <AccordionItem value="profile">
+                  <AccordionTrigger className="hover:no-underline">
+                    <div className="flex items-center gap-4">
+                      <Avatar>
+                        <AvatarImage src={user.avatar || undefined} />
+                        <AvatarFallback>
+                          {user.username?.slice(0, 2).toUpperCase() || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium">{user.username}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="flex flex-col space-y-2">
+                      <Link href="/dashboard">
+                        <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                          Dashboard
+                        </Button>
+                      </Link>
+                      <Link href="/profile">
+                        <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                          Profile
+                        </Button>
+                      </Link>
+                      <Link href="/settings">
+                        <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                          Settings
+                        </Button>
+                      </Link>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
           )}
         </nav>

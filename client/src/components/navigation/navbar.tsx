@@ -119,24 +119,32 @@ export function Navbar() {
             <div className="hidden md:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full">
+                  <Button variant="ghost" className="flex items-center gap-2 px-4">
                     <Avatar>
                       <AvatarImage src={user.avatar || undefined} />
                       <AvatarFallback>
                         {user.username?.slice(0, 2).toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
+                    <span>{user.username}</span>
+                    <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/dashboard">
+                      <span className="w-full">Dashboard</span>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/profile">Profile</Link>
+                    <Link href="/profile">
+                      <span className="w-full">Profile</span>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/settings">Settings</Link>
+                    <Link href="/settings">
+                      <span className="w-full">Settings</span>
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
