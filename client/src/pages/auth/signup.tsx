@@ -19,6 +19,14 @@ export default function SignupPage() {
   const [, setLocation] = useLocation();
   const { registerMutation } = useAuth();
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
+  const [fieldStates, setFieldStates] = useState({
+    username: { isValid: false, message: '' },
+    email: { isValid: false, message: '' },
+    password: { isValid: false, message: '' }
+  });
+
   const form = useForm({
     resolver: zodResolver(insertUserSchema),
     defaultValues: {
@@ -30,6 +38,17 @@ export default function SignupPage() {
       companyName: "",
     },
   });
+
+  const validateField = async (field: string, value: string) => {
+    setIsValidating(true);
+    // Add your API validation logic here
+    const isValid = value.length >= 3 && !/\s/.test(value);
+    setFieldStates(prev => ({
+      ...prev,
+      [field]: { isValid, message: isValid ? 'Valid' : 'Invalid format' }
+    }));
+    setIsValidating(false);
+  };
 
   const onSubmit = form.handleSubmit((data) => {
     registerMutation.mutate({
@@ -122,32 +141,66 @@ export default function SignupPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
-                    <Input 
-                      id="username" 
-                      {...form.register("username")}
-                      className="border-border/50 focus:border-primary"
-                    />
+                    <div className="relative">
+                      <Input 
+                        id="username" 
+                        {...form.register("username", {
+                          onChange: (e) => validateField('username', e.target.value)
+                        })}
+                        className={`border-2 ${
+                          fieldStates.username.isValid 
+                            ? 'border-purple-500' 
+                            : form.getValues('username') 
+                              ? 'border-purple-900' 
+                              : 'border-border/50'
+                        } focus:border-purple-600`}
+                      />
+                      {form.getValues('username') && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                          {fieldStates.username.isValid ? '✓' : '✕'}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   {userType === "company" && (
                     <div className="space-y-2">
                       <Label htmlFor="companyName">Company Name</Label>
-                      <Input 
-                        id="companyName" 
-                        {...form.register("companyName")}
-                        className="border-border/50 focus:border-primary"
-                      />
+                      <div className="relative">
+                        <Input 
+                          id="companyName" 
+                          {...form.register("companyName")}
+                          className="border-border/50 focus:border-purple-600"
+                        />
+                      </div>
                     </div>
                   )}
 
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input 
-                      id="password" 
-                      type="password" 
-                      {...form.register("password")}
-                      className="border-border/50 focus:border-primary"
-                    />
+                    <div className="relative">
+                      <Input 
+                        id="password" 
+                        type={showPassword ? "text" : "password"}
+                        {...form.register("password", {
+                          onChange: (e) => validateField('password', e.target.value)
+                        })}
+                        className={`border-2 ${
+                          fieldStates.password.isValid 
+                            ? 'border-purple-500' 
+                            : form.getValues('password') 
+                              ? 'border-purple-900' 
+                              : 'border-border/50'
+                        } focus:border-purple-600`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      >
+                        {showPassword ? '👁️' : '👁️‍🗨️'}
+                      </button>
+                    </div>
                   </div>
 
                   <Button 
