@@ -18,6 +18,15 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const insertUserSchema = createInsertSchema(users).pick({
+  username: true,
+  email: true,
+  password: true,
+  isFreelancer: true,
+  isCompany: true,
+  companyName: true,
+});
+
 export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -38,20 +47,6 @@ export const projects = pgTable("projects", {
   jobId: integer("job_id").notNull(),
   status: text("status").notNull().default("in_progress"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  email: true,
-  password: true,
-  googleId: true,
-  avatar: true,
-  isFreelancer: true,
-  isCompany: true,
-  companyName: true,
-  skills: true,
-  bio: true,
-  cvUrl: true,
 });
 
 export const insertJobSchema = createInsertSchema(jobs).pick({
