@@ -1,14 +1,28 @@
 {
   "variant": "professional",
-  "primary": "#21152B",
-  "appearance": "dark",
+  "primary": "#8A2BE2",
+  "appearance": "system",
   "radius": 0.75,
-  "darkBackground": "#21152B",
-  "accent": "#432B57",
-  "lightBackground": "#FFFFFF",
-  "purple": {
-    "primary": "#2C1D3A",
-    "hover": "#382449",
-    "accent": "#4E3366"
+  "darkBackground": "#090617",
+  "lightBackground": "#F4F0FF",
+  "colors": {
+    "dark": {
+      "background": "#090617",
+      "foreground": "#E0E0E0",
+      "muted": "#B0A8B9",
+      "primary": "#A020F0",
+      "secondary": "#FF00FF",
+      "button": "#8A2BE2",
+      "buttonHover": "#D100D1"
+    },
+    "light": {
+      "background": "#F4F0FF",
+      "foreground": "#1E1239",
+      "muted": "#4B3869",
+      "primary": "#6A0DAD",
+      "secondary": "#B366FF",
+      "button": "#8A2BE2",
+      "buttonHover": "#BF40BF"
+    }
   }
 }

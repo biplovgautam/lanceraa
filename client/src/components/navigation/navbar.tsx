@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 const categories = {
   work: [
@@ -29,22 +30,24 @@ const categories = {
 
 export function Navbar() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <nav className="fixed top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
-      <div className="container flex h-16 items-center">
+      <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <div className="flex-none">
           <Link href="/">
             <Button variant="ghost" className="p-0">
-              <span className="font-bold text-xl">FreelanceHub</span>
+              <span className="font-bold text-xl bg-gradient-to-r from-primary-dark to-secondary-dark bg-clip-text text-transparent dark:from-primary-light dark:to-secondary-light">
+                FreelanceHub
+              </span>
             </Button>
           </Link>
         </div>
 
         {/* Center Navigation */}
         <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:space-x-6">
-          {/* Centered main links */}
           <Link href="/about">
             <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary transition-colors">
               About
@@ -90,41 +93,48 @@ export function Navbar() {
 
         {/* Right Side Actions */}
         <div className="flex flex-none items-center justify-end space-x-4">
-          <Link href="/auth/login">
-            <Button variant="ghost" className="hidden md:inline-flex hover:bg-primary/10">
-              Login
-            </Button>
-          </Link>
-          <Link href="/auth/signup">
-            <Button className="hidden md:inline-flex bg-primary hover:bg-[#EE4932] transition-colors">
-              Sign Up
-            </Button>
-          </Link>
+          {!user && (
+            <>
+              <Link href="/auth/login">
+                <Button variant="ghost" className="hidden md:inline-flex hover:bg-button hover:text-white">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/auth/signup">
+                <Button className="hidden md:inline-flex bg-button hover:bg-button-hover-dark dark:hover:bg-button-hover-light text-white">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
 
           <ThemeToggle />
 
-          {/* Profile Dropdown - Only show when logged in */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Avatar>
-                  <AvatarImage src="/placeholder-avatar.jpg" />
-                  <AvatarFallback>FH</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard">Dashboard</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/profile">Profile</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/settings">Settings</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <Avatar>
+                    <AvatarImage src={user.avatar || undefined} />
+                    <AvatarFallback>
+                      {user.username?.slice(0, 2).toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">Settings</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileNavOpen(true)}>
             <Menu className="h-5 w-5" />
