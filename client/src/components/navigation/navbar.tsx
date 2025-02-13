@@ -48,6 +48,11 @@ export function Navbar() {
 
         {/* Center Navigation */}
         <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:space-x-6">
+          <Link href="/">
+            <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary transition-colors">
+              Home
+            </Button>
+          </Link>
           <Link href="/about">
             <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary transition-colors">
               About
