@@ -4,31 +4,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { SiGoogle } from "react-icons/si";
-import { Upload } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertUserSchema } from "@shared/schema";
 
 type UserType = "freelancer" | "company" | "individual";
 
 export default function SignupPage() {
   const [userType, setUserType] = useState<UserType>("individual");
-  const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [cvFile, setCvFile] = useState<File | null>(null);
+  const { registerMutation } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // TODO: Implement registration
-    toast({
-      title: "Coming soon",
-      description: "Registration will be implemented in the next update",
+  const form = useForm({
+    resolver: zodResolver(insertUserSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      isFreelancer: false,
+      isCompany: false,
+      companyName: "",
+    },
+  });
+
+  const onSubmit = form.handleSubmit((data) => {
+    registerMutation.mutate({
+      ...data,
+      isFreelancer: userType === "freelancer",
+      isCompany: userType === "company",
+    }, {
+      onSuccess: () => {
+        setLocation("/");
+      },
     });
-    setIsLoading(false);
-  };
+  });
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-b from-background to-background/95">
@@ -45,13 +58,9 @@ export default function SignupPage() {
               <h2 className="text-3xl font-bold tracking-tight">
                 Create your account
               </h2>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-muted dark:text-muted-dark light:text-muted-light mt-2">
                 Join our community and start your journey
               </p>
-            </div>
-
-            <div className="grid gap-4">
-              {/* Feature highlights */}
             </div>
           </motion.div>
 
@@ -69,7 +78,7 @@ export default function SignupPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={onSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label>Account Type</Label>
                     <RadioGroup 
@@ -103,56 +112,48 @@ export default function SignupPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" required />
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      {...form.register("email")}
+                      className="border-border/50 focus:border-primary"
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
-                    <Input id="username" required />
+                    <Input 
+                      id="username" 
+                      {...form.register("username")}
+                      className="border-border/50 focus:border-primary"
+                    />
                   </div>
 
                   {userType === "company" && (
                     <div className="space-y-2">
                       <Label htmlFor="companyName">Company Name</Label>
-                      <Input id="companyName" required />
-                    </div>
-                  )}
-
-                  {userType === "freelancer" && (
-                    <div className="space-y-2">
-                      <Label htmlFor="cv">CV Upload</Label>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => document.getElementById("cv")?.click()}
-                        >
-                          <Upload className="mr-2 h-4 w-4" />
-                          {cvFile ? cvFile.name : "Upload CV"}
-                        </Button>
-                        <Input
-                          id="cv"
-                          type="file"
-                          className="hidden"
-                          accept=".pdf,.doc,.docx"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) setCvFile(file);
-                          }}
-                        />
-                      </div>
+                      <Input 
+                        id="companyName" 
+                        {...form.register("companyName")}
+                        className="border-border/50 focus:border-primary"
+                      />
                     </div>
                   )}
 
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" required />
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      {...form.register("password")}
+                      className="border-border/50 focus:border-primary"
+                    />
                   </div>
 
                   <Button 
                     type="submit"
-                    className="w-full bg-primary hover:bg-[#EE4932] transition-colors"
-                    disabled={isLoading}
+                    className="w-full bg-button hover:bg-button-hover-dark dark:hover:bg-button-hover-light text-white transition-colors"
+                    disabled={registerMutation.isPending}
                   >
                     Create Account
                   </Button>
@@ -162,7 +163,7 @@ export default function SignupPage() {
                       <span className="w-full border-t" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-background px-2 text-muted-foreground">
+                      <span className="bg-background px-2 text-muted-dark dark:text-muted-light">
                         Or continue with
                       </span>
                     </div>
@@ -178,11 +179,11 @@ export default function SignupPage() {
                     Google
                   </Button>
 
-                  <p className="text-center text-sm text-muted-foreground">
+                  <p className="text-center text-sm text-muted-dark dark:text-muted-light">
                     Already have an account?{" "}
                     <Button 
                       variant="link" 
-                      className="pl-1 text-primary hover:text-[#EE4932]"
+                      className="pl-1 text-primary hover:text-primary-dark dark:hover:text-primary-light"
                       onClick={() => setLocation("/auth/login")}
                     >
                       Sign in

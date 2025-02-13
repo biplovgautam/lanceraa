@@ -3,26 +3,41 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { SiGoogle } from "react-icons/si";
+import { useAuth } from "@/hooks/use-auth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertUserSchema } from "@shared/schema";
+import { z } from "zod";
+
+const loginSchema = insertUserSchema.pick({
+  username: true,
+  password: true,
+});
+
+type LoginData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
+  const { loginMutation } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // TODO: Implement authentication
-    toast({
-      title: "Coming soon",
-      description: "Authentication will be implemented in the next update",
+  const form = useForm<LoginData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = form.handleSubmit((data) => {
+    loginMutation.mutate(data, {
+      onSuccess: () => {
+        setLocation("/");
+      },
     });
-    setIsLoading(false);
-  };
+  });
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-b from-background to-background/95">
@@ -42,34 +57,43 @@ export default function LoginPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={onSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" placeholder="m@example.com" type="email" required />
+                    <Label htmlFor="username">Username</Label>
+                    <Input 
+                      id="username"
+                      {...form.register("username")}
+                      className="border-border/50 focus:border-primary"
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" required />
+                    <Input 
+                      id="password" 
+                      type="password"
+                      {...form.register("password")}
+                      className="border-border/50 focus:border-primary"
+                    />
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary hover:bg-[#EE4932] transition-colors"
-                    disabled={isLoading}
+                    className="w-full bg-button hover:bg-button-hover-dark dark:hover:bg-button-hover-light text-white transition-colors"
+                    disabled={loginMutation.isPending}
                   >
                     Sign In
                   </Button>
-                  
+
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <span className="w-full border-t" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-background px-2 text-muted-foreground">
+                      <span className="bg-background px-2 text-muted-dark dark:text-muted-light">
                         Or continue with
                       </span>
                     </div>
                   </div>
-                  
+
                   <Button 
                     type="button" 
                     variant="outline" 
@@ -80,11 +104,11 @@ export default function LoginPage() {
                     Google
                   </Button>
 
-                  <p className="text-center text-sm text-muted-foreground">
+                  <p className="text-center text-sm text-muted-dark dark:text-muted-light">
                     Don't have an account?{" "}
                     <Button 
                       variant="link" 
-                      className="pl-1 text-primary hover:text-[#EE4932]"
+                      className="pl-1 text-primary hover:text-primary-dark dark:hover:text-primary-light"
                       onClick={() => setLocation("/auth/signup")}
                     >
                       Sign up
@@ -106,7 +130,7 @@ export default function LoginPage() {
               <h2 className="text-3xl font-bold tracking-tight">
                 Join our freelancing community
               </h2>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-muted-dark dark:text-muted-light mt-2">
                 Connect with top talent and opportunities worldwide.
               </p>
             </div>
