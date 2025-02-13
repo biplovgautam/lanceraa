@@ -43,7 +43,7 @@ export function Navbar() {
         </div>
 
         {/* Logo - Center in mobile, left in desktop */}
-        <div className="flex-1 md:flex-none text-center md:text-left md:pl-4">
+        <div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:flex-none md:text-left md:pl-4">
           <Link href="/">
             <Button variant="ghost" className="px-2">
               <span className="font-bold text-xl bg-gradient-to-r from-primary-dark to-secondary-dark bg-clip-text text-transparent dark:from-primary-light dark:to-secondary-light">

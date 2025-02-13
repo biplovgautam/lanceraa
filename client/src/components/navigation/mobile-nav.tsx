@@ -149,9 +149,18 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
               </Accordion>
             </div>
           ) : (
-            <Button variant="ghost" className="w-full justify-start" onClick={handleLogin}>
-              Login
-            </Button>
+            <div className="space-y-2">
+              <Link href="/auth/login">
+                <Button variant="ghost" className="w-full justify-start" onClick={onClose}>
+                  Login
+                </Button>
+              </Link>
+              <Link href="/auth/signup">
+                <Button variant="ghost" className="w-full justify-start bg-button hover:bg-button-hover-dark dark:hover:bg-button-hover-light text-white" onClick={onClose}>
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
           )}
         </nav>
       </SheetContent>
