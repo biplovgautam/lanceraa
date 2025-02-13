@@ -38,23 +38,35 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
       <div className="container flex h-16 items-center">
-        <Link href="/">
-          <Button variant="ghost" className="mr-8 p-0">
-            <span className="font-bold text-xl">FreelanceHub</span>
-          </Button>
-        </Link>
+        {/* Logo */}
+        <div className="flex-none">
+          <Link href="/">
+            <Button variant="ghost" className="p-0">
+              <span className="font-bold text-xl">FreelanceHub</span>
+            </Button>
+          </Link>
+        </div>
 
-        <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:space-x-4">
+        {/* Center Navigation */}
+        <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:space-x-6">
           {mainLinks.map((link) => (
             <Link key={link.href} href={link.href}>
-              <Button variant="ghost">{link.label}</Button>
+              <Button 
+                variant="ghost" 
+                className="hover:bg-primary/10 hover:text-primary transition-colors"
+              >
+                {link.label}
+              </Button>
             </Link>
           ))}
 
           {/* Work Categories Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
+              <Button 
+                variant="ghost"
+                className="hover:bg-primary/10 hover:text-primary transition-colors"
+              >
                 Work <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -72,7 +84,10 @@ export function Navbar() {
           {/* Freelancer Categories Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
+              <Button 
+                variant="ghost"
+                className="hover:bg-primary/10 hover:text-primary transition-colors"
+              >
                 Freelancer <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -88,10 +103,21 @@ export function Navbar() {
           </DropdownMenu>
         </div>
 
-        <div className="flex items-center space-x-4">
+        {/* Right Side Actions */}
+        <div className="flex flex-none items-center justify-end space-x-4">
+          <Link href="/auth">
+            <Button variant="ghost" className="hidden md:inline-flex hover:bg-primary/10">
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/auth?register=true">
+            <Button className="hidden md:inline-flex bg-primary hover:bg-primary/90">
+              Sign Up
+            </Button>
+          </Link>
           <ThemeToggle />
 
-          {/* Profile Dropdown */}
+          {/* Profile Dropdown - Only show when logged in */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
