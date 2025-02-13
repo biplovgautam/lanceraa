@@ -119,32 +119,35 @@ export function Navbar() {
             <div className="hidden md:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2 px-4">
-                    <Avatar>
+                  <Button variant="ghost" className="flex items-center gap-2 hover:bg-primary/10 hover:text-primary transition-colors">
+                    <Avatar className="h-6 w-6">
                       <AvatarImage src={user.avatar || undefined} />
                       <AvatarFallback>
                         {user.username?.slice(0, 2).toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
-                    <span>{user.username}</span>
+                    <span>Profile</span>
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard">
-                      <span className="w-full">Dashboard</span>
+                    <Link href="/dashboard" className="w-full">
+                      Dashboard
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/profile">
-                      <span className="w-full">Profile</span>
+                    <Link href="/profile" className="w-full">
+                      Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/settings">
-                      <span className="w-full">Settings</span>
+                    <Link href="/settings" className="w-full">
+                      Settings
                     </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => logoutMutation.mutate()}>
+                    Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

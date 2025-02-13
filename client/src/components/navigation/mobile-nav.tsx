@@ -128,6 +128,16 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
                           Settings
                         </Button>
                       </Link>
+                      <Button 
+                        variant="ghost" 
+                        className="w-full justify-start" 
+                        onClick={() => {
+                          logoutMutation.mutate();
+                          onClose();
+                        }}
+                      >
+                        Logout
+                      </Button>
                     </div>
                   </AccordionContent>
                 </AccordionItem>
