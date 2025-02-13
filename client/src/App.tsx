@@ -9,7 +9,8 @@ import About from "@/pages/about";
 import Recruit from "@/pages/recruit";
 import Work from "@/pages/work";
 import Dashboard from "@/pages/dashboard";
-import AuthPage from "@/pages/auth";
+import LoginPage from "@/pages/auth/login";
+import SignupPage from "@/pages/auth/signup";
 import { useEffect } from "react";
 
 function Router() {
@@ -20,7 +21,8 @@ function Router() {
       <Route path="/recruit" component={Recruit} />
       <Route path="/work" component={Work} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/auth" component={AuthPage} />
+      <Route path="/auth/login" component={LoginPage} />
+      <Route path="/auth/signup" component={SignupPage} />
       <Route component={NotFound} />
     </Switch>
   );

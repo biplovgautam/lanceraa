@@ -27,11 +27,6 @@ const categories = {
   ],
 };
 
-const mainLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-];
-
 export function Navbar() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -49,30 +44,23 @@ export function Navbar() {
 
         {/* Center Navigation */}
         <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:space-x-6">
-          {mainLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              <Button 
-                variant="ghost" 
-                className="hover:bg-primary/10 hover:text-primary transition-colors"
-              >
-                {link.label}
-              </Button>
-            </Link>
-          ))}
+          {/* Centered main links */}
+          <Link href="/about">
+            <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary transition-colors">
+              About
+            </Button>
+          </Link>
 
           {/* Work Categories Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost"
-                className="hover:bg-primary/10 hover:text-primary transition-colors"
-              >
+              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary transition-colors">
                 Work <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="w-56">
               {categories.work.map((item) => (
-                <DropdownMenuItem key={item.href} asChild>
+                <DropdownMenuItem key={item.href} asChild className="py-2">
                   <Link href={item.href}>
                     <span className="w-full">{item.label}</span>
                   </Link>
@@ -84,16 +72,13 @@ export function Navbar() {
           {/* Freelancer Categories Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost"
-                className="hover:bg-primary/10 hover:text-primary transition-colors"
-              >
+              <Button variant="ghost" className="hover:bg-primary/10 hover:text-primary transition-colors">
                 Freelancer <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="w-56">
               {categories.freelancer.map((item) => (
-                <DropdownMenuItem key={item.href} asChild>
+                <DropdownMenuItem key={item.href} asChild className="py-2">
                   <Link href={item.href}>
                     <span className="w-full">{item.label}</span>
                   </Link>
@@ -105,16 +90,17 @@ export function Navbar() {
 
         {/* Right Side Actions */}
         <div className="flex flex-none items-center justify-end space-x-4">
-          <Link href="/auth">
+          <Link href="/auth/login">
             <Button variant="ghost" className="hidden md:inline-flex hover:bg-primary/10">
-              Sign In
+              Login
             </Button>
           </Link>
-          <Link href="/auth?register=true">
-            <Button className="hidden md:inline-flex bg-primary hover:bg-primary/90">
+          <Link href="/auth/signup">
+            <Button className="hidden md:inline-flex bg-primary hover:bg-[#EE4932] transition-colors">
               Sign Up
             </Button>
           </Link>
+
           <ThemeToggle />
 
           {/* Profile Dropdown - Only show when logged in */}
@@ -127,7 +113,7 @@ export function Navbar() {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
                 <Link href="/dashboard">Dashboard</Link>
               </DropdownMenuItem>
@@ -150,7 +136,7 @@ export function Navbar() {
         open={mobileNavOpen} 
         onClose={() => setMobileNavOpen(false)} 
         categories={categories}
-        mainLinks={mainLinks}
+        mainLinks={[{ href: "/about", label: "About" }]}
       />
     </nav>
   );

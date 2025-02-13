@@ -3,7 +3,11 @@
   "primary": "#2759CD",
   "appearance": "dark",
   "radius": 0.75,
-  "darkBackground": "#304166",
+  "darkBackground": "#000000",
   "accent": "#EE4932",
-  "lightBackground": "#BDDIFF"
+  "lightBackground": "#FFFFFF",
+  "purple": {
+    "primary": "#5E4B9F",
+    "hover": "#7E6BBF"
+  }
 }
