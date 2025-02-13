@@ -30,6 +30,15 @@ export function MobileNav({ open, onClose, categories, mainLinks }: MobileNavPro
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent side="left" className="w-[300px] sm:w-[400px]">
         <nav className="flex flex-col space-y-4 mt-8">
+          <Link href="/">
+            <Button
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={onClose}
+            >
+              Home
+            </Button>
+          </Link>
           {mainLinks.map((link) => (
             <Link key={link.href} href={link.href}>
               <Button
