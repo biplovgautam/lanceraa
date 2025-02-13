@@ -9,6 +9,7 @@ import About from "@/pages/about";
 import Recruit from "@/pages/recruit";
 import Work from "@/pages/work";
 import Dashboard from "@/pages/dashboard";
+import AuthPage from "@/pages/auth";
 import { useEffect } from "react";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/recruit" component={Recruit} />
       <Route path="/work" component={Work} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
   );
