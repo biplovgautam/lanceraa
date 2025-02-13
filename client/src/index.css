@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.container {
+  @apply px-4 mx-auto max-w-7xl;
+}
+
 @layer base {
   * {
     @apply border-border;
