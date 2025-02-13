@@ -40,7 +40,7 @@ export function Navbar() {
           <Link href="/">
             <Button variant="ghost" className="px-2">
               <span className="font-bold text-xl bg-gradient-to-r from-primary-dark to-secondary-dark bg-clip-text text-transparent dark:from-primary-light dark:to-secondary-light">
-                FreelanceHub
+                TASKURE
               </span>
             </Button>
           </Link>

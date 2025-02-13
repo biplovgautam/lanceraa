@@ -6,7 +6,7 @@ export default function About() {
       <section className="container py-24">
         <div className="max-w-3xl mx-auto space-y-12">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold">About FreelanceHub</h1>
+            <h1 className="text-4xl font-bold">About TASKURE</h1>
             <p className="text-muted-foreground text-lg">
               Connecting talented professionals with amazing opportunities
             </p>
@@ -20,7 +20,7 @@ export default function About() {
 
           <div className="prose prose-lg dark:prose-invert mx-auto">
             <p>
-              FreelanceHub is a leading platform that connects businesses with talented
+              TASKURE is a leading platform that connects businesses with talented
               freelancers from around the world. Our mission is to create opportunities
               for professionals while helping businesses find the perfect talent for
               their projects.
