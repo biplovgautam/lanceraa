@@ -12,6 +12,8 @@ import Dashboard from "@/pages/dashboard";
 import LoginPage from "@/pages/auth/login";
 import SignupPage from "@/pages/auth/signup";
 import { useEffect } from "react";
+import { AuthProvider } from "@/hooks/use-auth";
+import { ProtectedRoute } from "./lib/protected-route";
 
 function Router() {
   return (
@@ -20,7 +22,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/recruit" component={Recruit} />
       <Route path="/work" component={Work} />
-      <Route path="/dashboard" component={Dashboard} />
+      <ProtectedRoute path="/dashboard" component={Dashboard} />
       <Route path="/auth/login" component={LoginPage} />
       <Route path="/auth/signup" component={SignupPage} />
       <Route component={NotFound} />
@@ -41,11 +43,13 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background text-foreground">
-        <Navbar />
-        <Router />
-        <Toaster />
-      </div>
+      <AuthProvider>
+        <div className="min-h-screen bg-background text-foreground">
+          <Navbar />
+          <Router />
+          <Toaster />
+        </div>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -1,13 +1,14 @@
 {
   "variant": "professional",
-  "primary": "#2759CD",
+  "primary": "#21152B",
   "appearance": "dark",
   "radius": 0.75,
-  "darkBackground": "#000000",
-  "accent": "#EE4932",
+  "darkBackground": "#21152B",
+  "accent": "#432B57",
   "lightBackground": "#FFFFFF",
   "purple": {
-    "primary": "#5E4B9F",
-    "hover": "#7E6BBF"
+    "primary": "#2C1D3A",
+    "hover": "#382449",
+    "accent": "#4E3366"
   }
 }
