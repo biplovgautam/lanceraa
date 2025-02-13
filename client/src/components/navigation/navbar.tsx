@@ -35,8 +35,15 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <div className="flex-none pl-4">
+        {/* Mobile Menu Button - Left */}
+        <div className="md:hidden">
+          <Button variant="ghost" size="icon" onClick={() => setMobileNavOpen(true)}>
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
+
+        {/* Logo - Center in mobile, left in desktop */}
+        <div className="flex-1 md:flex-none text-center md:text-left md:pl-4">
           <Link href="/">
             <Button variant="ghost" className="px-2">
               <span className="font-bold text-xl bg-gradient-to-r from-primary-dark to-secondary-dark bg-clip-text text-transparent dark:from-primary-light dark:to-secondary-light">
@@ -154,9 +161,7 @@ export function Navbar() {
             </div>
           )}
 
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileNavOpen(true)}>
-            <Menu className="h-5 w-5" />
-          </Button>
+          {/* Mobile controls are already on the right side */}
         </div>
       </div>
 
