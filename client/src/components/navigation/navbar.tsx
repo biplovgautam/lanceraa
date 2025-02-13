@@ -4,46 +4,128 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { MobileNav } from "./mobile-nav";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ChevronDown } from "lucide-react";
 
-const links = [
+const categories = {
+  work: [
+    { label: "Development & IT", href: "/work/development" },
+    { label: "Design & Creative", href: "/work/design" },
+    { label: "Sales & Marketing", href: "/work/marketing" },
+    { label: "Writing & Translation", href: "/work/writing" },
+  ],
+  freelancer: [
+    { label: "Find Work", href: "/freelancer/find-work" },
+    { label: "Saved Jobs", href: "/freelancer/saved" },
+    { label: "Proposals", href: "/freelancer/proposals" },
+  ],
+};
+
+const mainLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/recruit", label: "Recruit" },
-  { href: "/work", label: "Work" },
-  { href: "/dashboard", label: "Dashboard" },
 ];
 
 export function Navbar() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="fixed top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
       <div className="container flex h-16 items-center">
         <Link href="/">
-          <a className="mr-8 flex items-center space-x-2">
+          <Button variant="ghost" className="mr-8 p-0">
             <span className="font-bold text-xl">FreelanceHub</span>
-          </a>
+          </Button>
         </Link>
 
-        <div className="hidden md:flex md:space-x-4">
-          {links.map((link) => (
+        <div className="hidden md:flex md:flex-1 md:items-center md:justify-center md:space-x-4">
+          {mainLinks.map((link) => (
             <Link key={link.href} href={link.href}>
-              <a className="text-sm font-medium transition-colors hover:text-primary">
-                {link.label}
-              </a>
+              <Button variant="ghost">{link.label}</Button>
             </Link>
           ))}
+
+          {/* Work Categories Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost">
+                Work <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {categories.work.map((item) => (
+                <DropdownMenuItem key={item.href} asChild>
+                  <Link href={item.href}>
+                    <span className="w-full">{item.label}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Freelancer Categories Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost">
+                Freelancer <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {categories.freelancer.map((item) => (
+                <DropdownMenuItem key={item.href} asChild>
+                  <Link href={item.href}>
+                    <span className="w-full">{item.label}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        <div className="flex flex-1 items-center justify-end space-x-4">
+        <div className="flex items-center space-x-4">
           <ThemeToggle />
+
+          {/* Profile Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Avatar>
+                  <AvatarImage src="/placeholder-avatar.jpg" />
+                  <AvatarFallback>FH</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/settings">Settings</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileNavOpen(true)}>
             <Menu className="h-5 w-5" />
           </Button>
         </div>
       </div>
 
-      <MobileNav open={mobileNavOpen} onClose={() => setMobileNavOpen(false)} links={links} />
+      <MobileNav 
+        open={mobileNavOpen} 
+        onClose={() => setMobileNavOpen(false)} 
+        categories={categories}
+        mainLinks={mainLinks}
+      />
     </nav>
   );
 }
