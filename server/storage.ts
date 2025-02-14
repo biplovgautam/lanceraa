@@ -1,4 +1,6 @@
 import { users, jobs, projects, type User, type Job, type Project, type InsertUser, type InsertJob, type InsertProject } from "@shared/schema";
+import { db } from './db';
+import { eq } from 'drizzle-orm';
 
 export interface IStorage {
   // Users
@@ -94,4 +96,70 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DbStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.id, id));
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.username, username));
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    try {
+      const result = await db.insert(users).values(insertUser).returning();
+      return result[0];
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
+  }
+
+  async listFreelancers(): Promise<User[]> {
+    return await db.select().from(users).where(eq(users.isFreelancer, true));
+  }
+
+  async createJob(insertJob: InsertJob): Promise<Job> {
+    const result = await db.insert(jobs).values({
+      ...insertJob,
+      status: "open"
+    }).returning();
+    return result[0];
+  }
+
+  async getJob(id: number): Promise<Job | undefined> {
+    const result = await db.select().from(jobs).where(eq(jobs.id, id));
+    return result[0];
+  }
+
+  async listJobs(): Promise<Job[]> {
+    return await db.select().from(jobs);
+  }
+
+  async createProject(insertProject: InsertProject): Promise<Project> {
+    const result = await db.insert(projects).values({
+      ...insertProject,
+      status: "in_progress"
+    }).returning();
+    return result[0];
+  }
+
+  async getProject(id: number): Promise<Project | undefined> {
+    const result = await db.select().from(projects).where(eq(projects.id, id));
+    return result[0];
+  }
+
+  async listProjects(): Promise<Project[]> {
+    return await db.select().from(projects);
+  }
+
+  async listUserProjects(userId: number): Promise<Project[]> {
+    return await db.select().from(projects).where(
+      eq(projects.freelancerId, userId) || eq(projects.clientId, userId)
+    );
+  }
+}
+
+export const storage = new DbStorage();
